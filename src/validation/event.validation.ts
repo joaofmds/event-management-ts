@@ -7,8 +7,14 @@ export const createEventSchema = Joi.object({
   local: Joi.string().min(3),
 });
 
-export const idSchema = Joi.object({
-  id: Joi.string()
+export const userIdSchema = Joi.object({
+  userId: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .required(),
+});
+
+export const eventIdSchema = Joi.object({
+  eventId: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/)
     .required(),
 });
