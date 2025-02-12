@@ -70,21 +70,6 @@ class UserController {
       return;
     }
   };
-
-  public getAllUsers: RequestHandler = async (req, res) => {
-    try {
-      const users = await UserModel.find();
-
-      res.status(200).json({ users });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        res.status(400).json({ error: error.message });
-        return;
-      }
-      res.status(500).json({ error: 'Unknown error' });
-      return;
-    }
-  };
 }
 
 export default new UserController();
