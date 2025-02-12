@@ -27,7 +27,7 @@ afterEach(async () => {
 const newUser = {
   name: 'Fulano',
   email: 'fulano@gmail.com',
-  password: 'senha123',
+  password: 'Senha123',
 };
 
 describe('POST /users/register', () => {
@@ -76,7 +76,7 @@ describe('POST /users/login', () => {
 
     const response = await request(app)
       .post('/users/login')
-      .send({ email: newUser.email, password: 'incorrectPassword' });
+      .send({ email: newUser.email, password: 'incorrectPassword123' });
 
     expect(response.status).toBe(401);
     expect(response.body).toHaveProperty('error', 'Invalid credentials');
