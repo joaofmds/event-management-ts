@@ -5,7 +5,7 @@ import { ObjectSchema } from 'joi';
  * @param schema
  */
 
-export const validate = (schema: ObjectSchema) => {
+export const validateBody = (schema: ObjectSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const { error, value } = schema.validate(req.body, {
       abortEarly: false,
@@ -19,6 +19,24 @@ export const validate = (schema: ObjectSchema) => {
     }
 
     req.body = value;
+    next();
+  };
+};
+
+export const validateParams = (schema: ObjectSchema) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    const { error, value } = schema.validate(req.params, {
+      abortEarly: false,
+      allowUnknown: false,
+    });
+
+    if (error) {
+      const errorMessages = error.details.map((detail) => detail.message);
+      res.status(400).json({ error: errorMessages });
+      return;
+    }
+
+    req.params = value;
     next();
   };
 };
