@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import userController from '../controllers/user.controller';
-import { validate } from '../middlewares/validate.middleware';
+import { validateBody } from '../middlewares/validate.middleware';
 import {
   loginUserSchema,
   registerUserSchema,
@@ -8,7 +8,11 @@ import {
 
 const router = Router();
 
-router.post('/register', validate(registerUserSchema), userController.register);
-router.post('/login', validate(loginUserSchema), userController.login);
+router.post(
+  '/register',
+  validateBody(registerUserSchema),
+  userController.register,
+);
+router.post('/login', validateBody(loginUserSchema), userController.login);
 
 export default router;
