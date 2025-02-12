@@ -45,8 +45,8 @@ class EventController {
 
   public getOne: RequestHandler = async (req, res) => {
     try {
-      const { id } = req.params;
-      const event = await EventModel.findById(id).populate(
+      const { eventId } = req.params;
+      const event = await EventModel.findById(eventId).populate(
         'participants',
         'name email',
       );
@@ -70,8 +70,8 @@ class EventController {
 
   public update: RequestHandler = async (req, res) => {
     try {
-      const { id } = req.params;
-      const updated = await EventModel.findByIdAndUpdate(id, req.body, {
+      const { eventId } = req.params;
+      const updated = await EventModel.findByIdAndUpdate(eventId, req.body, {
         new: true,
       });
       if (!updated) {
@@ -93,8 +93,8 @@ class EventController {
 
   public delete: RequestHandler = async (req, res) => {
     try {
-      const { id } = req.params;
-      const deleted = await EventModel.findByIdAndDelete(id);
+      const { eventId } = req.params;
+      const deleted = await EventModel.findByIdAndDelete(eventId);
 
       if (!deleted) {
         res.status(404).json({ error: 'Event not found' });
