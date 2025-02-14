@@ -31,6 +31,7 @@
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/index.ts",
     "build": "tsc",
     "test": "jest",
-    "test:db": "ts-node src/config/testConnection.ts"
+    "test:db": "ts-node src/config/testConnection.ts",
+    "start": "node dist/index.js"
   }
 }
