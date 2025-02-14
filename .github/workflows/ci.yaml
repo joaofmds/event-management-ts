@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    environment: production
     runs-on: ubuntu-latest
     services:
       mongo:
@@ -49,7 +50,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          pasword: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Push Docker image to Docker Hub
         run: |
