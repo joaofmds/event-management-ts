@@ -8,7 +8,12 @@ export const connectDB = async () => {
       process.env.MONGO_URI || 'mongodb://localhost:27017/meudb',
     );
   } catch (error) {
-    console.error('Error to connect:', error);
+    if (error) {
+      console.error('Error to connect:', error);
+      if (process.env.NODE_ENV === 'test') {
+        throw error;
+      }
+    }
     process.exit(1);
   }
 };
