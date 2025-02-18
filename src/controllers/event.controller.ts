@@ -27,11 +27,29 @@ class EventController {
 
   public listAll: RequestHandler = async (req, res) => {
     try {
-      const events = await EventModel.find().populate(
-        'participants',
-        'name email',
-      );
-      res.status(200).json(events);
+      const { page = 1, limit = 10, sort, ...filters } = req.query;
+
+      const query: Record<string, unknown> = {};
+      for (const key in filters) {
+        query[key] = { $regex: filters[key] as string, $options: 'i' };
+      }
+
+      const skip = (Number(page) - 1) * Number(limit);
+
+      let queryExec = EventModel.find(query).skip(skip).limit(Number(limit));
+
+      if (sort) {
+        const [sortField, sortOrder] = (sort as string).split(':');
+        queryExec = queryExec.sort({
+          [sortField]: sortOrder === 'desc' ? -1 : 1,
+        });
+      }
+
+      const events = await queryExec.exec();
+
+      const total = await EventModel.countDocuments(query);
+
+      res.status(200).json({ total, events });
     } catch (error: unknown) {
       if (error instanceof Error) {
         res.status(400).json({ error: error.message });
