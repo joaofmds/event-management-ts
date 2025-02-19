@@ -209,6 +209,39 @@ class EventController {
       return;
     }
   };
+
+  public updateBanner = async (eventId: string, imagePath: string) => {
+    const updated = await EventModel.findByIdAndUpdate(eventId, {
+      banner: imagePath,
+    });
+    return updated;
+  };
+
+  public uploadBanner: RequestHandler = async (req, res) => {
+    try {
+      if (!req.file) {
+        res.status(400).json({ error: 'No file uploaded.' });
+        return;
+      }
+
+      const eventId = req.params.id;
+      const imagePath = `/uploads/${req.file.filename}`;
+
+      const updatedEvent = await this.updateBanner(eventId, imagePath);
+
+      res
+        .status(200)
+        .json({ message: 'Banner uploaded successfully', event: updatedEvent });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message });
+        return;
+      }
+
+      res.status(500).json({ error: 'Unknown error' });
+      return;
+    }
+  };
 }
 
 export default new EventController();

@@ -10,6 +10,7 @@ import {
   eventIdSchema,
   userIdSchema,
 } from '../validation/event.validation';
+import { upload } from '../utils/upload';
 
 const router = Router();
 
@@ -57,6 +58,13 @@ router.post(
   validateParams(eventIdSchema),
   validateBody(userIdSchema),
   EventController.unsubscribe,
+);
+
+router.post(
+  '/upload-banner/:id',
+  authMiddleware,
+  upload.single('banner'),
+  EventController.uploadBanner,
 );
 
 export default router;
